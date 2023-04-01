@@ -1,22 +1,6 @@
 @import '../../styles/variables';
+@import '../../styles/mixins';
 
 .btn {
-  padding: 7px 15px;
-
-  font-size: medium;
-  color: $isabelline;
-  
-  cursor: pointer;
-
-  background-color: $quick-silver;
-  border: none;
-  border-radius: 5px;
-
-  transition: $transition;
-
-  &:hover {
-    background-color: $darker-quick-silver;
-
-    transform: scale(1.03);
-  }
+  @include btn;
 }
