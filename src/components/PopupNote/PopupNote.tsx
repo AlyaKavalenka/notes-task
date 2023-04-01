@@ -72,10 +72,14 @@ export default function PopupNote() {
         <section className="popup__header">
           <section className="note__header">
             {tags}
-            <Button value="+" handleClick={() => addTags()} />
+            <Button value="+" handleClick={() => addTags()} disable={false} />
           </section>
           <section className="popup__close">
-            <Button value="✖" handleClick={() => closePopup()} />
+            <Button
+              value="✖"
+              handleClick={() => closePopup()}
+              disable={false}
+            />
           </section>
         </section>
         <TextArea
@@ -87,8 +91,16 @@ export default function PopupNote() {
           onInput={(e) => setNoteValue(e.currentTarget.value)}
           rows={8}
         />
-        <Button value="Save" handleClick={() => addNote()} />
-        <Button value="Delete note" handleClick={() => closePopup()} />
+        <Button
+          value="Save"
+          handleClick={() => addNote()}
+          disable={!noteValue}
+        />
+        <Button
+          value="Delete note"
+          handleClick={() => closePopup()}
+          disable={false}
+        />
       </aside>
     </section>
   );

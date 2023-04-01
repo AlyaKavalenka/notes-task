@@ -30,6 +30,7 @@ export default function Note(props: { text: string; id: string }) {
           handleClick={() => {
             addTags();
           }}
+          disable={false}
         />
       </section>
       <article
@@ -37,7 +38,6 @@ export default function Note(props: { text: string; id: string }) {
         role="presentation"
         id={id}
         onClick={(e) => {
-          console.log(e.currentTarget.id);
           setNoteId(e.currentTarget.id);
           setActivePopupNote('edit');
         }}
