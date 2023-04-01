@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
+import { Tag } from '../../types';
 import Button from '../Button/Button';
 import './PopupNote.scss';
 
@@ -8,14 +9,12 @@ const TextArea = styled.textarea``;
 
 export default function PopupNote() {
   const { setActivePopupNote } = useContext(ActivePopupNoteContext);
-  const arrTags = [];
-  for (let i = 0; i < 9; i += 1) {
-    arrTags.push(
-      <div className="note__tag" key={i}>
-        Tag
-      </div>
-    );
-  }
+  const arrTags: Tag[] = [];
+  const tags = arrTags.map((item) => (
+    <div className="note__tag" key={`${item}`}>
+      {item}
+    </div>
+  ));
 
   const [noteValue, setNoteValue] = useState('');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -41,7 +40,7 @@ export default function PopupNote() {
       <aside className="popup__wrapper">
         <section className="popup__header">
           <section className="note__header">
-            {arrTags}
+            {tags}
             <Button value="+" handleClick={() => addTags()} />
           </section>
           <section className="popup__close">
