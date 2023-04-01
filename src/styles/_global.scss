@@ -30,3 +30,9 @@ a {
   color: $isabelline;
   text-decoration: none;
 }
+
+.main {
+  &__wrapper {
+    margin: 1rem;
+  }
+}

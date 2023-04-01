@@ -1,3 +1,4 @@
+import Button from '../components/Button/Button';
 import Header from '../components/Header/Header';
 import Notes from '../components/Notes/Notes';
 
@@ -6,7 +7,10 @@ export default function MainPage() {
     <>
       <Header />
       <main>
-        <Notes />
+        <div className="main__wrapper">
+          <Button value="Create note" />
+          <Notes />
+        </div>
       </main>
     </>
   );
