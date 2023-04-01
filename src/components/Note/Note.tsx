@@ -1,3 +1,4 @@
+import Button from '../Button/Button';
 import './Note.scss';
 
 export default function Note() {
@@ -7,7 +8,10 @@ export default function Note() {
   }
   return (
     <div className="note">
-      <section className="note__header">{arrTags}</section>
+      <section className="note__header">
+        {arrTags}
+        <Button value="+" />
+      </section>
       <article className="note__text-wrapper">
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate
         odio sequi ducimus, temporibus perspiciatis nesciunt accusantium vel

@@ -22,9 +22,11 @@
     gap: .3rem;
     padding-bottom: 5px;
 
-    cursor: pointer;
-
     border-bottom: 1px solid $quick-silver;
+
+    .btn {
+      padding: 0 7px;
+    }
   }
 
   &__tag {
