@@ -1,0 +1,39 @@
+@import '../../styles/variables';
+
+.note {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  max-width: 200px;
+  padding: 7px;
+
+  border-radius: 5px;
+  box-shadow: 8px -8px 5px -5px $darker-quick-silver;
+
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .3rem;
+    padding-bottom: 5px;
+
+    border-bottom: 1px solid $quick-silver;
+  }
+
+  &__tag {
+    padding: 0 7px;
+
+    font-size: smaller;
+
+    text-transform: lowercase;
+
+    cursor: pointer;
+
+    background-color: $tag-color;
+
+    transition: $transition;
+
+    &:hover {
+      background-color: $tag-color-hover;
+    }
+  }
+}
