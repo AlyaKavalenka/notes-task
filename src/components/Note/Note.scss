@@ -10,11 +10,19 @@
   border-radius: 5px;
   box-shadow: 8px -8px 5px -5px $darker-quick-silver;
 
+  transition: $transition;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
   &__header {
     display: flex;
     flex-wrap: wrap;
     gap: .3rem;
     padding-bottom: 5px;
+
+    cursor: pointer;
 
     border-bottom: 1px solid $quick-silver;
   }
@@ -35,5 +43,9 @@
     &:hover {
       background-color: $tag-color-hover;
     }
+  }
+
+  &__text-wrapper {
+    cursor: pointer;
   }
 }
