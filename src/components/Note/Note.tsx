@@ -4,8 +4,9 @@ import './Note.scss';
 import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
 import { Tag } from '../../types';
 
-export default function Note() {
+export default function Note(props: { text: string }) {
   const { setActivePopupNote } = useContext(ActivePopupNoteContext);
+  const { text } = props;
   const arrTags: Tag[] = [];
 
   const tags = arrTags.map((item) => (
@@ -34,10 +35,7 @@ export default function Note() {
         role="presentation"
         onClick={() => setActivePopupNote(true)}
       >
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate
-        odio sequi ducimus, temporibus perspiciatis nesciunt accusantium vel
-        veniam dolorum dolorem alias. Culpa beatae quos porro in eligendi ex
-        maxime deserunt.
+        {text}
       </article>
     </div>
   );

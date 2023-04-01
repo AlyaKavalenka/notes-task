@@ -1,10 +1,19 @@
+import { INote } from '../../types';
 import Note from '../Note/Note';
 import './Notes.scss';
 
 export default function Notes() {
-  const notes = [];
-  for (let i = 0; i < 20; i += 1) {
-    notes.push(<Note key={i} />);
-  }
-  return <div className="notes">{notes}</div>;
+  const storageNotes = localStorage.getItem('notes');
+  let parsedNotes = [];
+  let notes = [];
+  if (storageNotes) parsedNotes = JSON.parse(storageNotes);
+  notes = parsedNotes.map((item: INote) => (
+    <Note text={item.text} key={item.id} />
+  ));
+
+  return (
+    <div className="notes">
+      {parsedNotes.length ? notes : <h2>Create note...</h2>}
+    </div>
+  );
 }

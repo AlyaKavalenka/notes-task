@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
-import { Tag } from '../../types';
+import { INote, Tag } from '../../types';
 import Button from '../Button/Button';
 import './PopupNote.scss';
 
@@ -9,6 +9,8 @@ const TextArea = styled.textarea``;
 
 export default function PopupNote() {
   const { setActivePopupNote } = useContext(ActivePopupNoteContext);
+  const [note, setNote] = useState<INote>({ id: 0, text: '' });
+  const storageNotes = localStorage.getItem('notes');
   const arrTags: Tag[] = [];
 
   const tags = arrTags.map((item) => (
@@ -26,7 +28,13 @@ export default function PopupNote() {
     }
   };
 
-  useEffect(resizeTextArea, [noteValue]);
+  useEffect(() => {
+    resizeTextArea();
+    setNote({
+      id: storageNotes ? JSON.parse(storageNotes).length : 0,
+      text: noteValue,
+    });
+  }, [noteValue, storageNotes]);
 
   function addTags() {
     console.log('click on add tag');
@@ -34,6 +42,16 @@ export default function PopupNote() {
 
   function closePopup() {
     setActivePopupNote(false);
+  }
+
+  function addNote() {
+    if (storageNotes) {
+      const updatedStorageNotes = [...JSON.parse(storageNotes), note];
+      localStorage.setItem('notes', JSON.stringify(updatedStorageNotes));
+    } else {
+      localStorage.setItem('notes', JSON.stringify([note]));
+    }
+    closePopup();
   }
 
   return (
@@ -57,7 +75,7 @@ export default function PopupNote() {
           onInput={(e) => setNoteValue(e.currentTarget.value)}
           rows={8}
         />
-        <Button value="Save" handleClick={() => closePopup()} />
+        <Button value="Save" handleClick={() => addNote()} />
         <Button value="Delete note" handleClick={() => closePopup()} />
       </aside>
     </section>
