@@ -2,17 +2,17 @@ import { useContext } from 'react';
 import Button from '../Button/Button';
 import './Note.scss';
 import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
+import { Tag } from '../../types';
 
 export default function Note() {
   const { setActivePopupNote } = useContext(ActivePopupNoteContext);
-  const arrTags = [];
-  for (let i = 0; i < 9; i += 1) {
-    arrTags.push(
-      <div className="note__tag" key={i}>
-        Tag
-      </div>
-    );
-  }
+  const arrTags: Tag[] = [];
+
+  const tags = arrTags.map((item) => (
+    <div className="note__tag" key={`${item}`}>
+      {item}
+    </div>
+  ));
 
   function addTags() {
     console.log('click on add tag');
@@ -21,7 +21,7 @@ export default function Note() {
   return (
     <div className="note">
       <section className="note__header">
-        {arrTags}
+        {tags}
         <Button
           value="+"
           handleClick={() => {
