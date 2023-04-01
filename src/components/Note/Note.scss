@@ -18,6 +18,7 @@
 
   &__header {
     display: flex;
+    flex-grow: 1;
     flex-wrap: wrap;
     gap: .3rem;
     padding-bottom: 5px;
