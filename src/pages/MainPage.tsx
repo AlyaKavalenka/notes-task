@@ -1,10 +1,13 @@
 import Header from '../components/Header/Header';
+import Notes from '../components/Notes/Notes';
 
 export default function MainPage() {
   return (
     <>
       <Header />
-      <h1>Maim Page</h1>
+      <main>
+        <Notes />
+      </main>
     </>
   );
 }
