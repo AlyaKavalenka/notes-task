@@ -12,7 +12,7 @@ export default function MainPage() {
   );
 
   function openPopup() {
-    setActivePopupNote(true);
+    setActivePopupNote('create');
   }
 
   return (

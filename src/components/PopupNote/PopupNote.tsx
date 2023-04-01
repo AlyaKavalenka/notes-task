@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
+import { EditNoteContext } from '../../context/EditNoteContext';
 import { INote, Tag } from '../../types';
 import Button from '../Button/Button';
 import './PopupNote.scss';
@@ -8,9 +9,17 @@ import './PopupNote.scss';
 const TextArea = styled.textarea``;
 
 export default function PopupNote() {
-  const { setActivePopupNote } = useContext(ActivePopupNoteContext);
-  const [note, setNote] = useState<INote>({ id: 0, text: '' });
+  const { noteId } = useContext(EditNoteContext);
+  const { isActivePopupNote, setActivePopupNote } = useContext(
+    ActivePopupNoteContext
+  );
+  const [note, setNote] = useState<INote>({ id: '', text: '' });
   const storageNotes = localStorage.getItem('notes');
+  let initialNoteValue = '';
+  if (isActivePopupNote === 'edit' && storageNotes) {
+    initialNoteValue = JSON.parse(storageNotes)[noteId].text;
+  }
+  const [noteValue, setNoteValue] = useState(initialNoteValue);
   const arrTags: Tag[] = [];
 
   const tags = arrTags.map((item) => (
@@ -19,7 +28,6 @@ export default function PopupNote() {
     </div>
   ));
 
-  const [noteValue, setNoteValue] = useState('');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const resizeTextArea = () => {
     if (textAreaRef.current) {
@@ -31,7 +39,7 @@ export default function PopupNote() {
   useEffect(() => {
     resizeTextArea();
     setNote({
-      id: storageNotes ? JSON.parse(storageNotes).length : 0,
+      id: storageNotes ? `${JSON.parse(storageNotes).length}` : '0',
       text: noteValue,
     });
   }, [noteValue, storageNotes]);
@@ -41,13 +49,17 @@ export default function PopupNote() {
   }
 
   function closePopup() {
-    setActivePopupNote(false);
+    setActivePopupNote('');
   }
 
   function addNote() {
-    if (storageNotes) {
-      const updatedStorageNotes = [...JSON.parse(storageNotes), note];
-      localStorage.setItem('notes', JSON.stringify(updatedStorageNotes));
+    if (storageNotes && isActivePopupNote === 'create') {
+      const addNoteToStorage = [...JSON.parse(storageNotes), note];
+      localStorage.setItem('notes', JSON.stringify(addNoteToStorage));
+    } else if (storageNotes && isActivePopupNote === 'edit') {
+      const editNoteInStorage = [...JSON.parse(storageNotes)];
+      editNoteInStorage.splice(+noteId, 1, note);
+      localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
     } else {
       localStorage.setItem('notes', JSON.stringify([note]));
     }

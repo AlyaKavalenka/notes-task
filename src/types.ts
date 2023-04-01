@@ -1,6 +1,6 @@
 export type Tag = string;
 
 export interface INote {
-  id: number;
+  id: string;
   text: string;
 }

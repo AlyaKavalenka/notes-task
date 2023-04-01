@@ -3,10 +3,12 @@ import Button from '../Button/Button';
 import './Note.scss';
 import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
 import { Tag } from '../../types';
+import { EditNoteContext } from '../../context/EditNoteContext';
 
-export default function Note(props: { text: string }) {
+export default function Note(props: { text: string; id: string }) {
   const { setActivePopupNote } = useContext(ActivePopupNoteContext);
-  const { text } = props;
+  const { setNoteId } = useContext(EditNoteContext);
+  const { text, id } = props;
   const arrTags: Tag[] = [];
 
   const tags = arrTags.map((item) => (
@@ -33,7 +35,12 @@ export default function Note(props: { text: string }) {
       <article
         className="note__text-wrapper"
         role="presentation"
-        onClick={() => setActivePopupNote(true)}
+        id={id}
+        onClick={(e) => {
+          console.log(e.currentTarget.id);
+          setNoteId(e.currentTarget.id);
+          setActivePopupNote('edit');
+        }}
       >
         {text}
       </article>
