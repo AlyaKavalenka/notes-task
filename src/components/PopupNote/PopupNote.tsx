@@ -118,24 +118,24 @@ export default function PopupNote() {
           className="popup__text"
           onInput={(e) => {
             if (e.currentTarget.textContent) {
-              const tempStr = e.currentTarget.textContent.replaceAll(
+              const strWithSpace = e.currentTarget.textContent.replaceAll(
+                ' ',
+                '&nbsp;'
+              );
+              const tempStr = strWithSpace.replaceAll(
                 /(#\w{1,})/gm,
                 '<span class="hashtag">$1</span>'
               );
               setNoteValue(e.currentTarget.textContent);
               e.currentTarget.innerHTML = tempStr;
               e.currentTarget.focus();
-              if (
-                typeof window.getSelection !== 'undefined' &&
-                typeof document.createRange !== 'undefined'
-              ) {
-                const range = document.createRange();
-                range.selectNodeContents(e.currentTarget);
-                range.collapse(false);
-                const sel = window.getSelection();
-                sel?.removeAllRanges();
-                sel?.addRange(range);
-              }
+              const sel = document.getSelection();
+              sel?.setBaseAndExtent(
+                e.currentTarget,
+                e.currentTarget.childNodes.length,
+                e.currentTarget,
+                e.currentTarget.childNodes.length
+              );
             }
           }}
           onKeyUp={(e) => {
