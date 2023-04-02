@@ -16,8 +16,11 @@ export default function PopupNote() {
   const [note, setNote] = useState<INote>({ id: '', text: '' });
   const storageNotes = localStorage.getItem('notes');
   let initialNoteValue = '';
+  let foundId = '';
   if (isActivePopupNote === 'edit' && storageNotes) {
-    initialNoteValue = JSON.parse(storageNotes)[noteId].text;
+    const parsed = JSON.parse(storageNotes);
+    foundId = parsed.findIndex((item: INote) => item.id === noteId);
+    initialNoteValue = JSON.parse(storageNotes)[foundId].text;
   }
   const [noteValue, setNoteValue] = useState(initialNoteValue);
   const arrTags: Tag[] = [];
@@ -38,8 +41,16 @@ export default function PopupNote() {
 
   useEffect(() => {
     resizeTextArea();
+    let setId = '0';
+    if (storageNotes) {
+      if (JSON.parse(storageNotes).length) {
+        setId = `${
+          +JSON.parse(storageNotes)[JSON.parse(storageNotes).length - 1].id + 1
+        }`;
+      }
+    }
     setNote({
-      id: storageNotes ? `${JSON.parse(storageNotes).length}` : '0',
+      id: setId,
       text: noteValue,
     });
   }, [noteValue, storageNotes]);
@@ -58,7 +69,7 @@ export default function PopupNote() {
       localStorage.setItem('notes', JSON.stringify(addNoteToStorage));
     } else if (storageNotes && isActivePopupNote === 'edit') {
       const editNoteInStorage = [...JSON.parse(storageNotes)];
-      editNoteInStorage.splice(+noteId, 1, { id: noteId, text: note.text });
+      editNoteInStorage.splice(+foundId, 1, { id: noteId, text: note.text });
       localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
     } else {
       localStorage.setItem('notes', JSON.stringify([note]));
@@ -67,7 +78,12 @@ export default function PopupNote() {
   }
 
   function deleteNote() {
-    closePopup();
+    if (storageNotes) {
+      const editNoteInStorage = [...JSON.parse(storageNotes)];
+      editNoteInStorage.splice(+foundId, 1);
+      localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
+      closePopup();
+    }
   }
 
   return (
