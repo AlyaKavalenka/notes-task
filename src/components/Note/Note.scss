@@ -29,6 +29,13 @@
     }
   }
 
+  &__input-tag {
+    color: $isabelline;
+    background-color: rgba($tag-color, .4);
+    border: none;
+    outline: none;
+  }
+
   &__tag {
     padding: 0 7px;
 

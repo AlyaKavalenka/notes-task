@@ -13,19 +13,22 @@ export default function PopupNote() {
   const { isActivePopupNote, setActivePopupNote } = useContext(
     ActivePopupNoteContext
   );
-  const [note, setNote] = useState<INote>({ id: '', text: '' });
+  const [note, setNote] = useState<INote>({ id: '', tags: [], text: '' });
   const storageNotes = localStorage.getItem('notes');
   let initialNoteValue = '';
+  let initialNoteTags: Tag[] = [];
   let foundId = '';
   if (isActivePopupNote === 'edit' && storageNotes) {
     const parsed = JSON.parse(storageNotes);
     foundId = parsed.findIndex((item: INote) => item.id === noteId);
     initialNoteValue = JSON.parse(storageNotes)[foundId].text;
+    initialNoteTags = JSON.parse(storageNotes)[foundId].tags;
   }
   const [noteValue, setNoteValue] = useState(initialNoteValue);
-  const arrTags: Tag[] = [];
+  const [tagsArr, setTagsArr] = useState(initialNoteTags);
+  const [inputTagValue, setInputTagValue] = useState('');
 
-  const tags = arrTags.map((item) => (
+  const tags = tagsArr.map((item) => (
     <div className="note__tag" key={`${item}`}>
       {item}
     </div>
@@ -51,12 +54,18 @@ export default function PopupNote() {
     }
     setNote({
       id: setId,
+      tags: tagsArr,
       text: noteValue,
     });
-  }, [noteValue, storageNotes]);
+  }, [noteValue, storageNotes, tagsArr]);
 
+  const inputTagRef = useRef<HTMLInputElement>(null);
   function addTags() {
-    console.log('click on add tag');
+    setTagsArr([...tagsArr, inputTagValue]);
+    setInputTagValue('');
+    if (inputTagRef.current) {
+      inputTagRef.current.value = '';
+    }
   }
 
   function closePopup() {
@@ -69,7 +78,12 @@ export default function PopupNote() {
       localStorage.setItem('notes', JSON.stringify(addNoteToStorage));
     } else if (storageNotes && isActivePopupNote === 'edit') {
       const editNoteInStorage = [...JSON.parse(storageNotes)];
-      editNoteInStorage.splice(+foundId, 1, { id: noteId, text: note.text });
+      const editedNote: INote = {
+        id: noteId,
+        tags: note.tags,
+        text: note.text,
+      };
+      editNoteInStorage.splice(+foundId, 1, editedNote);
       localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
     } else {
       localStorage.setItem('notes', JSON.stringify([note]));
@@ -92,6 +106,12 @@ export default function PopupNote() {
         <section className="popup__header">
           <section className="note__header">
             {tags}
+            <input
+              type="text"
+              className="note__input-tag"
+              onInput={(e) => setInputTagValue(e.currentTarget.value)}
+              ref={inputTagRef}
+            />
             <Button value="+" handleClick={() => addTags()} disable={false} />
           </section>
           <section className="popup__close">

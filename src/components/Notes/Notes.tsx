@@ -8,7 +8,7 @@ export default function Notes() {
   let notes = [];
   if (storageNotes) parsedNotes = JSON.parse(storageNotes);
   notes = parsedNotes.map((item: INote) => (
-    <Note text={item.text} key={item.id} id={item.id} />
+    <Note text={item.text} arrTags={item.tags} key={item.id} id={item.id} />
   ));
 
   return (
