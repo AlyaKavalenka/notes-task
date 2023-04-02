@@ -49,10 +49,12 @@ export default function PopupNote() {
 
   const inputTagRef = useRef<HTMLInputElement>(null);
   function addTags() {
-    setTagsArr([...tagsArr, inputTagValue]);
-    setInputTagValue('');
-    if (inputTagRef.current) {
-      inputTagRef.current.value = '';
+    if (inputTagValue) {
+      setTagsArr([...tagsArr, inputTagValue]);
+      setInputTagValue('');
+      if (inputTagRef.current) {
+        inputTagRef.current.value = '';
+      }
     }
   }
 
