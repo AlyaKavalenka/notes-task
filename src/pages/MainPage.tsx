@@ -12,7 +12,7 @@ export default function MainPage() {
   );
 
   function openPopup() {
-    setActivePopupNote(true);
+    setActivePopupNote('create');
   }
 
   return (
@@ -21,7 +21,11 @@ export default function MainPage() {
       <main>
         <div className="main__wrapper">
           <article className="btns">
-            <Button value="Create note" handleClick={() => openPopup()} />
+            <Button
+              value="Create note"
+              handleClick={() => openPopup()}
+              disable={false}
+            />
             <select name="" id="" value="Filter by tag" className="filter">
               <option value="">Filter by tag</option>
             </select>

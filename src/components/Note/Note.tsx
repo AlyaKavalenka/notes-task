@@ -2,17 +2,20 @@ import { useContext } from 'react';
 import Button from '../Button/Button';
 import './Note.scss';
 import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
+import { Tag } from '../../types';
+import { EditNoteContext } from '../../context/EditNoteContext';
 
-export default function Note() {
+export default function Note(props: { text: string; id: string }) {
   const { setActivePopupNote } = useContext(ActivePopupNoteContext);
-  const arrTags = [];
-  for (let i = 0; i < 9; i += 1) {
-    arrTags.push(
-      <div className="note__tag" key={i}>
-        Tag
-      </div>
-    );
-  }
+  const { setNoteId } = useContext(EditNoteContext);
+  const { text, id } = props;
+  const arrTags: Tag[] = [];
+
+  const tags = arrTags.map((item) => (
+    <div className="note__tag" key={`${item}`}>
+      {item}
+    </div>
+  ));
 
   function addTags() {
     console.log('click on add tag');
@@ -21,23 +24,25 @@ export default function Note() {
   return (
     <div className="note">
       <section className="note__header">
-        {arrTags}
+        {tags}
         <Button
           value="+"
           handleClick={() => {
             addTags();
           }}
+          disable={false}
         />
       </section>
       <article
         className="note__text-wrapper"
         role="presentation"
-        onClick={() => setActivePopupNote(true)}
+        id={id}
+        onClick={(e) => {
+          setNoteId(e.currentTarget.id);
+          setActivePopupNote('edit');
+        }}
       >
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Cupiditate
-        odio sequi ducimus, temporibus perspiciatis nesciunt accusantium vel
-        veniam dolorum dolorem alias. Culpa beatae quos porro in eligendi ex
-        maxime deserunt.
+        {text}
       </article>
     </div>
   );

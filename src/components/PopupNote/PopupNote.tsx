@@ -1,23 +1,33 @@
 import { useEffect, useRef, useState, useContext } from 'react';
 import styled from 'styled-components';
 import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
+import { EditNoteContext } from '../../context/EditNoteContext';
+import { INote, Tag } from '../../types';
 import Button from '../Button/Button';
 import './PopupNote.scss';
 
 const TextArea = styled.textarea``;
 
 export default function PopupNote() {
-  const { setActivePopupNote } = useContext(ActivePopupNoteContext);
-  const arrTags = [];
-  for (let i = 0; i < 9; i += 1) {
-    arrTags.push(
-      <div className="note__tag" key={i}>
-        Tag
-      </div>
-    );
+  const { noteId } = useContext(EditNoteContext);
+  const { isActivePopupNote, setActivePopupNote } = useContext(
+    ActivePopupNoteContext
+  );
+  const [note, setNote] = useState<INote>({ id: '', text: '' });
+  const storageNotes = localStorage.getItem('notes');
+  let initialNoteValue = '';
+  if (isActivePopupNote === 'edit' && storageNotes) {
+    initialNoteValue = JSON.parse(storageNotes)[noteId].text;
   }
+  const [noteValue, setNoteValue] = useState(initialNoteValue);
+  const arrTags: Tag[] = [];
 
-  const [noteValue, setNoteValue] = useState('');
+  const tags = arrTags.map((item) => (
+    <div className="note__tag" key={`${item}`}>
+      {item}
+    </div>
+  ));
+
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const resizeTextArea = () => {
     if (textAreaRef.current) {
@@ -26,14 +36,34 @@ export default function PopupNote() {
     }
   };
 
-  useEffect(resizeTextArea, [noteValue]);
+  useEffect(() => {
+    resizeTextArea();
+    setNote({
+      id: storageNotes ? `${JSON.parse(storageNotes).length}` : '0',
+      text: noteValue,
+    });
+  }, [noteValue, storageNotes]);
 
   function addTags() {
     console.log('click on add tag');
   }
 
   function closePopup() {
-    setActivePopupNote(false);
+    setActivePopupNote('');
+  }
+
+  function addNote() {
+    if (storageNotes && isActivePopupNote === 'create') {
+      const addNoteToStorage = [...JSON.parse(storageNotes), note];
+      localStorage.setItem('notes', JSON.stringify(addNoteToStorage));
+    } else if (storageNotes && isActivePopupNote === 'edit') {
+      const editNoteInStorage = [...JSON.parse(storageNotes)];
+      editNoteInStorage.splice(+noteId, 1, { id: noteId, text: note.text });
+      localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
+    } else {
+      localStorage.setItem('notes', JSON.stringify([note]));
+    }
+    closePopup();
   }
 
   return (
@@ -41,11 +71,15 @@ export default function PopupNote() {
       <aside className="popup__wrapper">
         <section className="popup__header">
           <section className="note__header">
-            {arrTags}
-            <Button value="+" handleClick={() => addTags()} />
+            {tags}
+            <Button value="+" handleClick={() => addTags()} disable={false} />
           </section>
           <section className="popup__close">
-            <Button value="✖" handleClick={() => closePopup()} />
+            <Button
+              value="✖"
+              handleClick={() => closePopup()}
+              disable={false}
+            />
           </section>
         </section>
         <TextArea
@@ -57,8 +91,16 @@ export default function PopupNote() {
           onInput={(e) => setNoteValue(e.currentTarget.value)}
           rows={8}
         />
-        <Button value="Save" handleClick={() => closePopup()} />
-        <Button value="Delete note" handleClick={() => closePopup()} />
+        <Button
+          value="Save"
+          handleClick={() => addNote()}
+          disable={!noteValue}
+        />
+        <Button
+          value="Delete note"
+          handleClick={() => closePopup()}
+          disable={false}
+        />
       </aside>
     </section>
   );

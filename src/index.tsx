@@ -1,6 +1,7 @@
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { ActivePopupNoteContextProvider } from './context/ActivePopupNoteContext';
+import { EditNoteContextProvider } from './context/EditNoteContext';
 import './index.scss';
 
 const root = ReactDOM.createRoot(
@@ -9,6 +10,8 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <ActivePopupNoteContextProvider>
-    <App />
+    <EditNoteContextProvider>
+      <App />
+    </EditNoteContextProvider>
   </ActivePopupNoteContextProvider>
 );

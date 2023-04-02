@@ -5,17 +5,17 @@ interface ProviderProps {
 }
 
 interface PopupNoteContextProps {
-  isActivePopupNote: boolean;
-  setActivePopupNote: React.Dispatch<React.SetStateAction<boolean>>;
+  isActivePopupNote: string;
+  setActivePopupNote: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const ActivePopupNoteContext = createContext<PopupNoteContextProps>({
-  isActivePopupNote: false,
-  setActivePopupNote: () => false,
+  isActivePopupNote: '',
+  setActivePopupNote: () => '',
 });
 
 export function ActivePopupNoteContextProvider({ children }: ProviderProps) {
-  const [isActivePopupNote, setActivePopupNote] = useState(false);
+  const [isActivePopupNote, setActivePopupNote] = useState('');
 
   const value = useMemo(
     () => ({ isActivePopupNote, setActivePopupNote }),
