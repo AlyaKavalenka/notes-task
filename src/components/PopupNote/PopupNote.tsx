@@ -58,7 +58,7 @@ export default function PopupNote() {
       localStorage.setItem('notes', JSON.stringify(addNoteToStorage));
     } else if (storageNotes && isActivePopupNote === 'edit') {
       const editNoteInStorage = [...JSON.parse(storageNotes)];
-      editNoteInStorage.splice(+noteId, 1, note);
+      editNoteInStorage.splice(+noteId, 1, { id: noteId, text: note.text });
       localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
     } else {
       localStorage.setItem('notes', JSON.stringify([note]));
