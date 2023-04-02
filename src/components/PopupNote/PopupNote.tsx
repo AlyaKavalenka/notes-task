@@ -66,6 +66,10 @@ export default function PopupNote() {
     closePopup();
   }
 
+  function deleteNote() {
+    closePopup();
+  }
+
   return (
     <section className="popup">
       <aside className="popup__wrapper">
@@ -96,11 +100,19 @@ export default function PopupNote() {
           handleClick={() => addNote()}
           disable={!noteValue}
         />
-        <Button
-          value="Delete note"
-          handleClick={() => closePopup()}
-          disable={false}
-        />
+        {isActivePopupNote === 'edit' ? (
+          <Button
+            value="Delete note"
+            handleClick={() => deleteNote()}
+            disable={false}
+          />
+        ) : (
+          <Button
+            value="Cancel"
+            handleClick={() => closePopup()}
+            disable={false}
+          />
+        )}
       </aside>
     </section>
   );
