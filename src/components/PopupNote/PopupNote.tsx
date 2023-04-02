@@ -115,7 +115,6 @@ export default function PopupNote() {
           id="note-text"
           className="popup__text"
           onInput={(e) => {
-            const matchTags = e.currentTarget.textContent?.match(/(#\w{1,})/gm);
             if (e.currentTarget.textContent) {
               const tempStr = e.currentTarget.textContent.replaceAll(
                 /(#\w{1,})/gm,
@@ -137,8 +136,23 @@ export default function PopupNote() {
               }
             }
           }}
+          onKeyUp={(e) => {
+            if (e.code === 'Space') {
+              const matchTags =
+                e.currentTarget.textContent?.match(/(#\w{1,})/gm);
+              if (matchTags) {
+                const tempArr = [...tagsArr];
+                matchTags.map((item) => tempArr.push(item.replace('#', '')));
+                const arrToSet = tempArr.filter(
+                  (item, index) => tempArr.indexOf(item) === index
+                );
+                setTagsArr([...arrToSet]);
+              }
+            }
+          }}
           contentEditable
           suppressContentEditableWarning
+          role="presentation"
         >
           {editText}
         </div>
