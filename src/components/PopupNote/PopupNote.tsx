@@ -1,12 +1,9 @@
 import { useEffect, useRef, useState, useContext } from 'react';
-import styled from 'styled-components';
 import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
 import { EditNoteContext } from '../../context/EditNoteContext';
 import { INote, Tag } from '../../types';
 import Button from '../Button/Button';
 import './PopupNote.scss';
-
-const TextArea = styled.textarea``;
 
 export default function PopupNote() {
   const { noteId } = useContext(EditNoteContext);
@@ -27,23 +24,14 @@ export default function PopupNote() {
   const [noteValue, setNoteValue] = useState(initialNoteValue);
   const [tagsArr, setTagsArr] = useState(initialNoteTags);
   const [inputTagValue, setInputTagValue] = useState('');
-
+  const [editText] = useState(noteValue);
   const tags = tagsArr.map((item) => (
     <div className="note__tag" key={`${item}`}>
       {item}
     </div>
   ));
 
-  const textAreaRef = useRef<HTMLTextAreaElement>(null);
-  const resizeTextArea = () => {
-    if (textAreaRef.current) {
-      textAreaRef.current.style.height = 'auto';
-      textAreaRef.current.style.height = `${textAreaRef.current.scrollHeight}px`;
-    }
-  };
-
   useEffect(() => {
-    resizeTextArea();
     let setId = '0';
     if (storageNotes) {
       if (JSON.parse(storageNotes).length) {
@@ -122,15 +110,38 @@ export default function PopupNote() {
             />
           </section>
         </section>
-        <TextArea
+        <div
           placeholder="Type note..."
           id="note-text"
           className="popup__text"
-          ref={textAreaRef}
-          value={noteValue}
-          onInput={(e) => setNoteValue(e.currentTarget.value)}
-          rows={8}
-        />
+          onInput={(e) => {
+            const matchTags = e.currentTarget.textContent?.match(/(#\w{1,})/gm);
+            if (e.currentTarget.textContent) {
+              const tempStr = e.currentTarget.textContent.replaceAll(
+                /(#\w{1,})/gm,
+                '<span class="hashtag">$1</span>'
+              );
+              setNoteValue(e.currentTarget.textContent);
+              e.currentTarget.innerHTML = tempStr;
+              e.currentTarget.focus();
+              if (
+                typeof window.getSelection !== 'undefined' &&
+                typeof document.createRange !== 'undefined'
+              ) {
+                const range = document.createRange();
+                range.selectNodeContents(e.currentTarget);
+                range.collapse(false);
+                const sel = window.getSelection();
+                sel?.removeAllRanges();
+                sel?.addRange(range);
+              }
+            }
+          }}
+          contentEditable
+          suppressContentEditableWarning
+        >
+          {editText}
+        </div>
         <Button
           value="Save"
           handleClick={() => addNote()}
