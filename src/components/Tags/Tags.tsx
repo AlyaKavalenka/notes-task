@@ -2,6 +2,7 @@ import { useContext, useRef, useState } from 'react';
 import { ViewModeContext } from '../../context/ViewModeContext';
 import Button from '../Button/Button';
 import { Tag } from '../../types';
+import './Tags.scss';
 
 export default function Tags(props: {
   noteTags: Tag[];
@@ -12,12 +13,12 @@ export default function Tags(props: {
   const [inputTagValue, setInputTagValue] = useState('');
 
   const tags = noteTags.map((item, index) => (
-    <div className="note__tag" key={`${item}`}>
+    <div className="tags__tag" key={`${item}`}>
       {item}
-      {viewMode ? (
+      {viewMode !== 'view' ? (
         <button
           type="button"
-          className="note__delete-tag"
+          className="tags__delete-tag"
           onClick={() => {
             const copyTagsArr: Tag[] = [...noteTags];
             copyTagsArr.splice(index, 1);
@@ -44,13 +45,13 @@ export default function Tags(props: {
   }
 
   return (
-    <section className="note__header">
+    <section className="tags">
       {tags}
       {viewMode !== 'view' ? (
         <>
           <input
             type="text"
-            className="note__input-tag"
+            className="tags__input-tag"
             onInput={(e) => setInputTagValue(e.currentTarget.value)}
             onKeyUp={(e) => {
               if (e.code === 'Enter') {
