@@ -1,15 +1,15 @@
 import { useState } from 'react';
 import { Tag } from '../../types';
-import './NoteText.scss';
+import './PopupText.scss';
 
-interface INoteTextProps {
+interface IPopupTextProps {
   setValue: (value: string) => void;
   tags: Tag[];
   setNoteTags: (value: Tag[]) => void;
   value: string;
 }
 
-export default function NoteText(props: INoteTextProps) {
+export default function PopupText(props: IPopupTextProps) {
   const { setValue, tags, setNoteTags, value } = props;
   const [editText] = useState(value);
 
@@ -55,7 +55,8 @@ export default function NoteText(props: INoteTextProps) {
       }}
       contentEditable
       suppressContentEditableWarning
-      role="presentation"
+      role="textbox"
+      tabIndex={0}
     >
       {editText}
     </div>

@@ -6,7 +6,7 @@ import Button from '../Button/Button';
 import './PopupNote.scss';
 import { addNote, deleteNote, getParsedNotes } from '../../utils/storage';
 import Tags from '../Tags/Tags';
-import NoteText from '../NoteText/NoteText';
+import PopupText from '../PopupText/PopupText';
 
 export default function PopupNote() {
   const { noteId } = useContext(EditNoteContext);
@@ -52,7 +52,7 @@ export default function PopupNote() {
             />
           </section>
         </section>
-        <NoteText
+        <PopupText
           setValue={setValue}
           tags={tagsArr}
           setNoteTags={setNoteTags}

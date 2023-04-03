@@ -17,10 +17,28 @@
   }
 
   &__text-wrapper {
-    height: 100%;
+
     overflow: auto;
 
     word-break: break-all;
+  }
+
+  &__text-button {
+    display: flex;
+
+    font-size: 1rem;
+    color: $isabelline;
+    text-align: start;
     cursor: pointer;
+
+    background: none;
+    border: none;
+
+    outline: none;
+  }
+
+  &__text-wrapper,
+  &__text-button {
+    height: 100%;
   }
 }

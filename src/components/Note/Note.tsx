@@ -17,16 +17,18 @@ export default function Note(props: {
   return (
     <div className="note">
       <Tags noteTags={arrTags} setNoteTags={() => {}} />
-      <article
-        className="note__text-wrapper"
-        role="presentation"
-        id={id}
-        onClick={(e) => {
-          setNoteId(e.currentTarget.id);
-          setViewMode('edit');
-        }}
-      >
-        {text}
+      <article className="note__text-wrapper">
+        <button
+          className="note__text-button"
+          type="button"
+          id={id}
+          onClick={(e) => {
+            setNoteId(e.currentTarget.id);
+            setViewMode('edit');
+          }}
+        >
+          {text}
+        </button>
       </article>
     </div>
   );
