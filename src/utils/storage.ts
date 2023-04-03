@@ -2,7 +2,7 @@ import { INote } from '../types';
 
 export function getParsedNotes(): INote[] {
   const storageNotes = localStorage.getItem('notes');
-  let parsedNotes;
+  let parsedNotes = [];
   if (storageNotes) parsedNotes = JSON.parse(storageNotes);
   return parsedNotes;
 }
