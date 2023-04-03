@@ -111,6 +111,11 @@ export default function PopupNote() {
               type="text"
               className="note__input-tag"
               onInput={(e) => setInputTagValue(e.currentTarget.value)}
+              onKeyUp={(e) => {
+                if (e.code === 'Enter') {
+                  addTags();
+                }
+              }}
               ref={inputTagRef}
             />
             <Button
