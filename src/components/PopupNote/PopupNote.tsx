@@ -102,7 +102,11 @@ export default function PopupNote() {
               onInput={(e) => setInputTagValue(e.currentTarget.value)}
               ref={inputTagRef}
             />
-            <Button value="+" handleClick={() => addTags()} disable={false} />
+            <Button
+              value="+"
+              handleClick={() => addTags()}
+              disable={!inputTagValue}
+            />
           </section>
           <section className="popup__close">
             <Button
