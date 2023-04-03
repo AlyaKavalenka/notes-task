@@ -1,0 +1,21 @@
+@import '../../styles/variables';
+
+.text {
+  font: inherit;
+
+  color: $isabelline;
+  resize: none;
+  background: none;
+  border: none;
+  outline: none;
+
+  &::placeholder {
+    color: $darker-quick-silver;
+  }
+
+  .hashtag {
+    padding: 2px 5px;
+    
+    background-color: $tag-color;
+  }
+}

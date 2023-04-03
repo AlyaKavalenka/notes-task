@@ -6,6 +6,7 @@ import Button from '../Button/Button';
 import './PopupNote.scss';
 import getParsedNotes from '../../utils/storage';
 import Tags from '../Tags/Tags';
+import NoteText from '../NoteText/NoteText';
 
 export default function PopupNote() {
   const { noteId } = useContext(EditNoteContext);
@@ -22,7 +23,6 @@ export default function PopupNote() {
   }
   const [noteValue, setNoteValue] = useState(initialNoteValue);
   const [tagsArr, setTagsArr] = useState(initialNoteTags);
-  const [editText] = useState(noteValue);
 
   useEffect(() => {
     let setId = '0';
@@ -63,6 +63,7 @@ export default function PopupNote() {
   }
 
   const setNoteTags = (value: Tag[]) => setTagsArr(value);
+  const setValue = (value: string) => setNoteValue(value);
 
   return (
     <section className="popup">
@@ -77,52 +78,12 @@ export default function PopupNote() {
             />
           </section>
         </section>
-        <div
-          placeholder="Type note..."
-          id="note-text"
-          className="popup__text"
-          onInput={(e) => {
-            if (e.currentTarget.textContent) {
-              const strWithSpace = e.currentTarget.textContent.replaceAll(
-                ' ',
-                '&nbsp;'
-              );
-              const tempStr = strWithSpace.replaceAll(
-                /(#\w{1,})/gm,
-                '<span class="hashtag">$1</span>'
-              );
-              setNoteValue(e.currentTarget.textContent);
-              e.currentTarget.innerHTML = tempStr;
-              e.currentTarget.focus();
-              const sel = document.getSelection();
-              sel?.setBaseAndExtent(
-                e.currentTarget,
-                e.currentTarget.childNodes.length,
-                e.currentTarget,
-                e.currentTarget.childNodes.length
-              );
-            }
-          }}
-          onKeyUp={(e) => {
-            if (e.code === 'Space') {
-              const matchTags =
-                e.currentTarget.textContent?.match(/(#\w{1,})/gm);
-              if (matchTags) {
-                const tempArr = [...tagsArr];
-                matchTags.map((item) => tempArr.push(item.replace('#', '')));
-                const arrToSet = tempArr.filter(
-                  (item, index) => tempArr.indexOf(item) === index
-                );
-                setTagsArr([...arrToSet]);
-              }
-            }
-          }}
-          contentEditable
-          suppressContentEditableWarning
-          role="presentation"
-        >
-          {editText}
-        </div>
+        <NoteText
+          setValue={setValue}
+          tags={tagsArr}
+          setNoteTags={setNoteTags}
+          value={noteValue}
+        />
         <Button
           value="Save"
           handleClick={() => addNote()}
