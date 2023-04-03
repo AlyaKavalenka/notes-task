@@ -4,7 +4,7 @@ import { EditNoteContext } from '../../context/EditNoteContext';
 import { INote, Tag } from '../../types';
 import Button from '../Button/Button';
 import './PopupNote.scss';
-import { addNote, getParsedNotes } from '../../utils/storage';
+import { addNote, deleteNote, getParsedNotes } from '../../utils/storage';
 import Tags from '../Tags/Tags';
 import NoteText from '../NoteText/NoteText';
 
@@ -35,13 +35,6 @@ export default function PopupNote() {
       text: noteValue,
     });
   }, [noteValue, tagsArr]);
-
-  function deleteNote() {
-    const editNoteInStorage = [...getParsedNotes()];
-    editNoteInStorage.splice(foundId, 1);
-    localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
-    setViewMode('view');
-  }
 
   const setNoteTags = (value: Tag[]) => setTagsArr(value);
   const setValue = (value: string) => setNoteValue(value);
@@ -76,7 +69,10 @@ export default function PopupNote() {
         {viewMode === 'edit' ? (
           <Button
             value="Delete note"
-            handleClick={() => deleteNote()}
+            handleClick={() => {
+              deleteNote(foundId);
+              setViewMode('view');
+            }}
             disable={false}
           />
         ) : (

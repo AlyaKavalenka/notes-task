@@ -29,3 +29,9 @@ export function addNote(
     localStorage.setItem('notes', JSON.stringify([note]));
   }
 }
+
+export function deleteNote(foundId: number) {
+  const editNoteInStorage = [...getParsedNotes()];
+  editNoteInStorage.splice(foundId, 1);
+  localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
+}
