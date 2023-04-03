@@ -5,15 +5,3 @@
   display: flex;
   gap: .5rem;
 }
-
-.filter {
-  @include btn;
-  
-  outline: none;
-
-  &:focus {
-    background-color: $darker-quick-silver;
-
-    transform: scale(1.03);
-  }
-}

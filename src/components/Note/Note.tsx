@@ -1,38 +1,34 @@
 import { useContext } from 'react';
-import Button from '../Button/Button';
 import './Note.scss';
-import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
+import { ViewModeContext } from '../../context/ViewModeContext';
 import { Tag } from '../../types';
 import { EditNoteContext } from '../../context/EditNoteContext';
+import Tags from '../Tags/Tags';
 
 export default function Note(props: {
   text: string;
   id: string;
   arrTags: Tag[];
 }) {
-  const { setActivePopupNote } = useContext(ActivePopupNoteContext);
+  const { setViewMode } = useContext(ViewModeContext);
   const { setNoteId } = useContext(EditNoteContext);
   const { text, id, arrTags } = props;
 
-  const tags = arrTags.map((item) => (
-    <div className="note__tag" key={`${item}`}>
-      {item}
-    </div>
-  ));
-
   return (
     <div className="note">
-      <section className="note__header">{tags}</section>
-      <article
-        className="note__text-wrapper"
-        role="presentation"
-        id={id}
-        onClick={(e) => {
-          setNoteId(e.currentTarget.id);
-          setActivePopupNote('edit');
-        }}
-      >
-        {text}
+      <Tags noteTags={arrTags} setNoteTags={() => {}} />
+      <article className="note__text-wrapper">
+        <button
+          className="note__text-button"
+          type="button"
+          id={id}
+          onClick={(e) => {
+            setNoteId(e.currentTarget.id);
+            setViewMode('edit');
+          }}
+        >
+          {text}
+        </button>
       </article>
     </div>
   );

@@ -12,14 +12,8 @@ body {
 }
 
 #root,
-.app,
 body {
   height: inherit;
-}
-
-.app {
-  display: flex;
-  flex-direction: column;
 }
 
 main {

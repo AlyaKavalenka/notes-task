@@ -1,14 +1,14 @@
 import { INote, Tag } from '../../types';
+import { getParsedNotes } from '../../utils/storage';
 import Note from '../Note/Note';
 import './Notes.scss';
 
 export default function Notes(props: { filterTag: Tag }) {
   const { filterTag } = props;
-  const storageNotes = localStorage.getItem('notes');
-  let parsedNotes = [];
+
   let notes: JSX.Element[] = [];
-  if (storageNotes) parsedNotes = JSON.parse(storageNotes);
-  const findTag = parsedNotes
+
+  const findTag = getParsedNotes()
     .map((item: INote) => {
       const tempArr = [];
       if (item.tags.find((el) => el === filterTag)) {
@@ -24,14 +24,14 @@ export default function Notes(props: { filterTag: Tag }) {
     ));
   }
   if (filterTag === 'none') {
-    setNotes(parsedNotes);
+    setNotes(getParsedNotes());
   } else {
     setNotes(findTag);
   }
 
   return (
     <div className="notes">
-      {parsedNotes.length ? notes : <h2>Create note...</h2>}
+      {getParsedNotes().length ? notes : <h2>Create note...</h2>}
     </div>
   );
 }
