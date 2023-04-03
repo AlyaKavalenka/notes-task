@@ -19,7 +19,7 @@
   &__header {
     display: flex;
     flex-wrap: wrap;
-    gap: .3rem;
+    gap: .6rem;
     padding-bottom: 5px;
 
     border-bottom: 1px solid $quick-silver;
@@ -36,7 +36,28 @@
     outline: none;
   }
 
+  &__delete-tag {
+    position: absolute;
+    top: -5px;
+
+    padding: 0 5px 2px;
+
+    font-size: 9px;
+    color: $light-gray;
+
+    cursor: pointer;
+
+    background-color: $black-olive;
+    border: none;
+    border-radius: 50%;
+
+    opacity: 0;
+    
+    transition: $transition;
+  }
+
   &__tag {
+    position: relative;
     padding: 0 7px;
 
     font-size: smaller;
@@ -51,6 +72,12 @@
 
     &:hover {
       background-color: $tag-color-hover;
+
+      .note{
+        &__delete-tag {
+          opacity: 1;
+        }
+      }
     }
   }
 
