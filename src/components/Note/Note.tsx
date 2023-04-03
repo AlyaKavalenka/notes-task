@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import Button from '../Button/Button';
 import './Note.scss';
 import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
 import { Tag } from '../../types';
