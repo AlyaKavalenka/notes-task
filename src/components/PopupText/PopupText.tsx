@@ -41,7 +41,7 @@ export default function PopupText(props: IPopupTextProps) {
         }
       }}
       onKeyUp={(e) => {
-        if (e.code === 'Space') {
+        if (e.key === ' ') {
           const matchTags = e.currentTarget.textContent?.match(/(#\w{1,})/gm);
           if (matchTags) {
             const tempArr = [...tags];
