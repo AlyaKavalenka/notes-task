@@ -1,5 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
-import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
+import { ViewModeContext } from '../../context/ViewModeContext';
 import { EditNoteContext } from '../../context/EditNoteContext';
 import { INote, Tag } from '../../types';
 import Button from '../Button/Button';
@@ -9,15 +9,13 @@ import Tags from '../Tags/Tags';
 
 export default function PopupNote() {
   const { noteId } = useContext(EditNoteContext);
-  const { isActivePopupNote, setActivePopupNote } = useContext(
-    ActivePopupNoteContext
-  );
+  const { viewMode, setViewMode } = useContext(ViewModeContext);
   const [note, setNote] = useState<INote>({ id: '', tags: [], text: '' });
   let initialNoteValue = '';
   let initialNoteTags: Tag[] = [];
   let foundId = 0;
 
-  if (isActivePopupNote === 'edit') {
+  if (viewMode === 'edit') {
     foundId = getParsedNotes().findIndex((item: INote) => item.id === noteId);
     initialNoteValue = getParsedNotes()[foundId].text;
     initialNoteTags = getParsedNotes()[foundId].tags;
@@ -39,14 +37,14 @@ export default function PopupNote() {
   }, [noteValue, tagsArr]);
 
   function closePopup() {
-    setActivePopupNote('view');
+    setViewMode('view');
   }
 
   function addNote() {
-    if (isActivePopupNote === 'create') {
+    if (viewMode === 'create') {
       const addNoteToStorage = [...getParsedNotes(), note];
       localStorage.setItem('notes', JSON.stringify(addNoteToStorage));
-    } else if (isActivePopupNote === 'edit') {
+    } else if (viewMode === 'edit') {
       const editNoteInStorage = [...getParsedNotes()];
       const editedNote: INote = {
         id: noteId,
@@ -134,7 +132,7 @@ export default function PopupNote() {
           handleClick={() => addNote()}
           disable={!noteValue}
         />
-        {isActivePopupNote === 'edit' ? (
+        {viewMode === 'edit' ? (
           <Button
             value="Delete note"
             handleClick={() => deleteNote()}

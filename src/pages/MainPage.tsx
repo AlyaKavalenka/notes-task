@@ -4,18 +4,16 @@ import Button from '../components/Button/Button';
 import Header from '../components/Header/Header';
 import Notes from '../components/Notes/Notes';
 import PopupNote from '../components/PopupNote/PopupNote';
-import { ActivePopupNoteContext } from '../context/ActivePopupNoteContext';
+import { ViewModeContext } from '../context/ViewModeContext';
 import FilterByTag from '../components/FilterByTag/FilterByTag';
 import { FilterTagContext } from '../context/FilterTag';
 
 export default function MainPage() {
-  const { isActivePopupNote, setActivePopupNote } = useContext(
-    ActivePopupNoteContext
-  );
+  const { viewMode, setViewMode } = useContext(ViewModeContext);
   const { filterTag } = useContext(FilterTagContext);
 
   function openPopup() {
-    setActivePopupNote('create');
+    setViewMode('create');
   }
 
   return (
@@ -33,7 +31,7 @@ export default function MainPage() {
           </article>
           <Notes filterTag={filterTag} />
         </div>
-        {isActivePopupNote !== 'view' ? <PopupNote /> : ''}
+        {viewMode !== 'view' ? <PopupNote /> : ''}
       </main>
     </>
   );

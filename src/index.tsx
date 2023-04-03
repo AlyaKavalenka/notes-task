@@ -1,6 +1,6 @@
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { ActivePopupNoteContextProvider } from './context/ActivePopupNoteContext';
+import { ViewModeContextProvider } from './context/ViewModeContext';
 import { EditNoteContextProvider } from './context/EditNoteContext';
 import './index.scss';
 import { FilterTagContextProvider } from './context/FilterTag';
@@ -10,11 +10,11 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <ActivePopupNoteContextProvider>
+  <ViewModeContextProvider>
     <EditNoteContextProvider>
       <FilterTagContextProvider>
         <App />
       </FilterTagContextProvider>
     </EditNoteContextProvider>
-  </ActivePopupNoteContextProvider>
+  </ViewModeContextProvider>
 );

@@ -1,5 +1,5 @@
 import { useContext, useRef, useState } from 'react';
-import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
+import { ViewModeContext } from '../../context/ViewModeContext';
 import Button from '../Button/Button';
 import { Tag } from '../../types';
 
@@ -7,14 +7,14 @@ export default function Tags(props: {
   noteTags: Tag[];
   setNoteTags: (value: Tag[]) => void;
 }) {
-  const { isActivePopupNote } = useContext(ActivePopupNoteContext);
+  const { viewMode } = useContext(ViewModeContext);
   const { noteTags, setNoteTags } = props;
   const [inputTagValue, setInputTagValue] = useState('');
 
   const tags = noteTags.map((item, index) => (
     <div className="note__tag" key={`${item}`}>
       {item}
-      {isActivePopupNote ? (
+      {viewMode ? (
         <button
           type="button"
           className="note__delete-tag"
@@ -46,7 +46,7 @@ export default function Tags(props: {
   return (
     <section className="note__header">
       {tags}
-      {isActivePopupNote !== 'view' ? (
+      {viewMode !== 'view' ? (
         <>
           <input
             type="text"

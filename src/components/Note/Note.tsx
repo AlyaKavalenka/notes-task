@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import './Note.scss';
-import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
+import { ViewModeContext } from '../../context/ViewModeContext';
 import { Tag } from '../../types';
 import { EditNoteContext } from '../../context/EditNoteContext';
 import Tags from '../Tags/Tags';
@@ -10,7 +10,7 @@ export default function Note(props: {
   id: string;
   arrTags: Tag[];
 }) {
-  const { setActivePopupNote } = useContext(ActivePopupNoteContext);
+  const { setViewMode } = useContext(ViewModeContext);
   const { setNoteId } = useContext(EditNoteContext);
   const { text, id, arrTags } = props;
 
@@ -23,7 +23,7 @@ export default function Note(props: {
         id={id}
         onClick={(e) => {
           setNoteId(e.currentTarget.id);
-          setActivePopupNote('edit');
+          setViewMode('edit');
         }}
       >
         {text}
