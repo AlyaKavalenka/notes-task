@@ -1,5 +1,5 @@
 import './MainPage.scss';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import Button from '../components/Button/Button';
 import Header from '../components/Header/Header';
 import Notes from '../components/Notes/Notes';
@@ -23,11 +23,13 @@ export default function MainPage() {
       (item, index) => allTagsArr.indexOf(item) === index
     );
     tagsOptions = filteredArr.map((item: Tag) => (
-      <option value="" key={item}>
+      <option value={item} key={item}>
         {item}
       </option>
     ));
   }
+
+  const [filterTag, setFilterTag] = useState('none');
 
   function openPopup() {
     setActivePopupNote('create');
@@ -44,12 +46,22 @@ export default function MainPage() {
               handleClick={() => openPopup()}
               disable={false}
             />
-            <select name="" id="" value="Filter by tag" className="filter">
-              <option value="">Filter by tag:</option>
+            <select
+              name=""
+              id=""
+              value="Filter by tag"
+              className="filter"
+              onChange={(e) => setFilterTag(e.currentTarget.value)}
+            >
+              <option value="">Filter by tag: {filterTag || 'none'}</option>
+              <option value="none" className="filter__cancel">
+                Cancel filter
+              </option>
+              <hr />
               {tagsOptions}
             </select>
           </article>
-          <Notes />
+          <Notes filterTag={filterTag} />
         </div>
         {isActivePopupNote ? <PopupNote /> : ''}
       </main>
