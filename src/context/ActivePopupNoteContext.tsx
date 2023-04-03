@@ -15,7 +15,7 @@ export const ActivePopupNoteContext = createContext<PopupNoteContextProps>({
 });
 
 export function ActivePopupNoteContextProvider({ children }: ProviderProps) {
-  const [isActivePopupNote, setActivePopupNote] = useState('');
+  const [isActivePopupNote, setActivePopupNote] = useState('view');
 
   const value = useMemo(
     () => ({ isActivePopupNote, setActivePopupNote }),

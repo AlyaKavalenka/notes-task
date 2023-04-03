@@ -3,6 +3,7 @@ import './Note.scss';
 import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
 import { Tag } from '../../types';
 import { EditNoteContext } from '../../context/EditNoteContext';
+import Tags from '../Tags/Tags';
 
 export default function Note(props: {
   text: string;
@@ -13,15 +14,9 @@ export default function Note(props: {
   const { setNoteId } = useContext(EditNoteContext);
   const { text, id, arrTags } = props;
 
-  const tags = arrTags.map((item) => (
-    <div className="note__tag" key={`${item}`}>
-      {item}
-    </div>
-  ));
-
   return (
     <div className="note">
-      <section className="note__header">{tags}</section>
+      <Tags noteTags={arrTags} setNoteTags={() => {}} />
       <article
         className="note__text-wrapper"
         role="presentation"

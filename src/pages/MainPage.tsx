@@ -33,7 +33,7 @@ export default function MainPage() {
           </article>
           <Notes filterTag={filterTag} />
         </div>
-        {isActivePopupNote ? <PopupNote /> : ''}
+        {isActivePopupNote !== 'view' ? <PopupNote /> : ''}
       </main>
     </>
   );

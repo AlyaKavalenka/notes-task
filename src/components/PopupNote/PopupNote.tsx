@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState, useContext } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { ActivePopupNoteContext } from '../../context/ActivePopupNoteContext';
 import { EditNoteContext } from '../../context/EditNoteContext';
 import { INote, Tag } from '../../types';
 import Button from '../Button/Button';
 import './PopupNote.scss';
 import getParsedNotes from '../../utils/storage';
+import Tags from '../Tags/Tags';
 
 export default function PopupNote() {
   const { noteId } = useContext(EditNoteContext);
@@ -23,24 +24,7 @@ export default function PopupNote() {
   }
   const [noteValue, setNoteValue] = useState(initialNoteValue);
   const [tagsArr, setTagsArr] = useState(initialNoteTags);
-  const [inputTagValue, setInputTagValue] = useState('');
   const [editText] = useState(noteValue);
-  const tags = tagsArr.map((item, index) => (
-    <div className="note__tag" key={`${item}`}>
-      {item}
-      <button
-        type="button"
-        className="note__delete-tag"
-        onClick={() => {
-          const copyTagsArr = [...tagsArr];
-          copyTagsArr.splice(index, 1);
-          setTagsArr(copyTagsArr);
-        }}
-      >
-        x
-      </button>
-    </div>
-  ));
 
   useEffect(() => {
     let setId = '0';
@@ -54,19 +38,8 @@ export default function PopupNote() {
     });
   }, [noteValue, tagsArr]);
 
-  const inputTagRef = useRef<HTMLInputElement>(null);
-  function addTags() {
-    if (inputTagValue) {
-      setTagsArr([...tagsArr, inputTagValue]);
-      setInputTagValue('');
-      if (inputTagRef.current) {
-        inputTagRef.current.value = '';
-      }
-    }
-  }
-
   function closePopup() {
-    setActivePopupNote('');
+    setActivePopupNote('view');
   }
 
   function addNote() {
@@ -95,29 +68,13 @@ export default function PopupNote() {
     closePopup();
   }
 
+  const setNoteTags = (value: Tag[]) => setTagsArr(value);
+
   return (
     <section className="popup">
       <aside className="popup__wrapper">
         <section className="popup__header">
-          <section className="note__header">
-            {tags}
-            <input
-              type="text"
-              className="note__input-tag"
-              onInput={(e) => setInputTagValue(e.currentTarget.value)}
-              onKeyUp={(e) => {
-                if (e.code === 'Enter') {
-                  addTags();
-                }
-              }}
-              ref={inputTagRef}
-            />
-            <Button
-              value="+"
-              handleClick={() => addTags()}
-              disable={!inputTagValue}
-            />
-          </section>
+          <Tags noteTags={note.tags} setNoteTags={setNoteTags} />
           <section className="popup__close">
             <Button
               value="✖"
