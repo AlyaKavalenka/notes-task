@@ -1,0 +1,17 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.btn {
+  @include btn;
+
+  &:disabled {
+    cursor: not-allowed;
+
+    opacity: .5;
+
+    &:hover {
+      background-color: $quick-silver;
+      scale: (.95);
+    }
+  }
+}

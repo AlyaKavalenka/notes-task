@@ -1,0 +1,44 @@
+@import '../../styles/variables';
+
+.note {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  width: 250px;
+  padding: 7px;
+
+  border-radius: 5px;
+  box-shadow: 8px -8px 5px -5px $darker-quick-silver;
+
+  transition: $transition;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &__text-wrapper {
+
+    overflow: auto;
+
+    word-break: break-all;
+  }
+
+  &__text-button {
+    display: flex;
+
+    font-size: 1rem;
+    color: $isabelline;
+    text-align: start;
+    cursor: pointer;
+
+    background: none;
+    border: none;
+
+    outline: none;
+  }
+
+  &__text-wrapper,
+  &__text-button {
+    height: 100%;
+  }
+}

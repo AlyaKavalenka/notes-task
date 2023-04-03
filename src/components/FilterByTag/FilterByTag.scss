@@ -1,0 +1,14 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.filter {
+  @include btn;
+  
+  outline: none;
+
+  &:focus {
+    background-color: $darker-quick-silver;
+
+    transform: scale(1.03);
+  }
+}
