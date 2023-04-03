@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { INote, Tag } from '../../types';
-import getParsedNotes from '../../utils/storage';
+import { getParsedNotes } from '../../utils/storage';
 import { FilterTagContext } from '../../context/FilterTag';
 import './FilterByTag.scss';
 

@@ -1,5 +1,5 @@
 import { INote, Tag } from '../../types';
-import getParsedNotes from '../../utils/storage';
+import { getParsedNotes } from '../../utils/storage';
 import Note from '../Note/Note';
 import './Notes.scss';
 

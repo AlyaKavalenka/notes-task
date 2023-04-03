@@ -4,7 +4,7 @@ import { EditNoteContext } from '../../context/EditNoteContext';
 import { INote, Tag } from '../../types';
 import Button from '../Button/Button';
 import './PopupNote.scss';
-import getParsedNotes from '../../utils/storage';
+import { addNote, getParsedNotes } from '../../utils/storage';
 import Tags from '../Tags/Tags';
 import NoteText from '../NoteText/NoteText';
 
@@ -35,25 +35,6 @@ export default function PopupNote() {
       text: noteValue,
     });
   }, [noteValue, tagsArr]);
-
-  function addNote() {
-    if (viewMode === 'create') {
-      const addNoteToStorage = [...getParsedNotes(), note];
-      localStorage.setItem('notes', JSON.stringify(addNoteToStorage));
-    } else if (viewMode === 'edit') {
-      const editNoteInStorage = [...getParsedNotes()];
-      const editedNote: INote = {
-        id: noteId,
-        tags: note.tags,
-        text: note.text,
-      };
-      editNoteInStorage.splice(foundId, 1, editedNote);
-      localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
-    } else {
-      localStorage.setItem('notes', JSON.stringify([note]));
-    }
-    setViewMode('view');
-  }
 
   function deleteNote() {
     const editNoteInStorage = [...getParsedNotes()];
@@ -86,7 +67,10 @@ export default function PopupNote() {
         />
         <Button
           value="Save"
-          handleClick={() => addNote()}
+          handleClick={() => {
+            addNote(note, viewMode, noteId, foundId);
+            setViewMode('view');
+          }}
           disable={!noteValue}
         />
         {viewMode === 'edit' ? (
