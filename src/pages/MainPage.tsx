@@ -6,30 +6,25 @@ import Notes from '../components/Notes/Notes';
 import PopupNote from '../components/PopupNote/PopupNote';
 import { ActivePopupNoteContext } from '../context/ActivePopupNoteContext';
 import { INote, Tag } from '../types';
+import getParsedNotes from '../utils/storage';
 
 export default function MainPage() {
   const { isActivePopupNote, setActivePopupNote } = useContext(
     ActivePopupNoteContext
   );
-  const storageNotes = localStorage.getItem('notes');
-  let parsedNotes;
-  let allTagsArr: Tag[];
-  let tagsOptions;
-  let filteredArr;
-  if (storageNotes) {
-    parsedNotes = JSON.parse(storageNotes);
-    allTagsArr = parsedNotes.map((item: INote) => item.tags).flat();
-    filteredArr = allTagsArr.filter(
-      (item, index) => allTagsArr.indexOf(item) === index
-    );
-    tagsOptions = filteredArr.map((item: Tag) => (
-      <option value={item} key={item}>
-        {item}
-      </option>
-    ));
-  }
-
   const [filterTag, setFilterTag] = useState('none');
+
+  const allTagsArr = getParsedNotes()
+    .map((item: INote) => item.tags)
+    .flat();
+  const filteredArr = allTagsArr.filter(
+    (item, index) => allTagsArr.indexOf(item) === index
+  );
+  const tagsOptions = filteredArr.map((item: Tag) => (
+    <option value={item} key={item}>
+      {item}
+    </option>
+  ));
 
   function openPopup() {
     setActivePopupNote('create');

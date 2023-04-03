@@ -4,6 +4,7 @@ import { EditNoteContext } from '../../context/EditNoteContext';
 import { INote, Tag } from '../../types';
 import Button from '../Button/Button';
 import './PopupNote.scss';
+import getParsedNotes from '../../utils/storage';
 
 export default function PopupNote() {
   const { noteId } = useContext(EditNoteContext);
@@ -11,15 +12,14 @@ export default function PopupNote() {
     ActivePopupNoteContext
   );
   const [note, setNote] = useState<INote>({ id: '', tags: [], text: '' });
-  const storageNotes = localStorage.getItem('notes');
   let initialNoteValue = '';
   let initialNoteTags: Tag[] = [];
-  let foundId = '';
-  if (isActivePopupNote === 'edit' && storageNotes) {
-    const parsed = JSON.parse(storageNotes);
-    foundId = parsed.findIndex((item: INote) => item.id === noteId);
-    initialNoteValue = JSON.parse(storageNotes)[foundId].text;
-    initialNoteTags = JSON.parse(storageNotes)[foundId].tags;
+  let foundId = 0;
+
+  if (isActivePopupNote === 'edit') {
+    foundId = getParsedNotes().findIndex((item: INote) => item.id === noteId);
+    initialNoteValue = getParsedNotes()[foundId].text;
+    initialNoteTags = getParsedNotes()[foundId].tags;
   }
   const [noteValue, setNoteValue] = useState(initialNoteValue);
   const [tagsArr, setTagsArr] = useState(initialNoteTags);
@@ -44,19 +44,15 @@ export default function PopupNote() {
 
   useEffect(() => {
     let setId = '0';
-    if (storageNotes) {
-      if (JSON.parse(storageNotes).length) {
-        setId = `${
-          +JSON.parse(storageNotes)[JSON.parse(storageNotes).length - 1].id + 1
-        }`;
-      }
+    if (getParsedNotes().length) {
+      setId = `${+getParsedNotes()[getParsedNotes().length - 1].id + 1}`;
     }
     setNote({
       id: setId,
       tags: tagsArr,
       text: noteValue,
     });
-  }, [noteValue, storageNotes, tagsArr]);
+  }, [noteValue, tagsArr]);
 
   const inputTagRef = useRef<HTMLInputElement>(null);
   function addTags() {
@@ -74,17 +70,17 @@ export default function PopupNote() {
   }
 
   function addNote() {
-    if (storageNotes && isActivePopupNote === 'create') {
-      const addNoteToStorage = [...JSON.parse(storageNotes), note];
+    if (isActivePopupNote === 'create') {
+      const addNoteToStorage = [...getParsedNotes(), note];
       localStorage.setItem('notes', JSON.stringify(addNoteToStorage));
-    } else if (storageNotes && isActivePopupNote === 'edit') {
-      const editNoteInStorage = [...JSON.parse(storageNotes)];
+    } else if (isActivePopupNote === 'edit') {
+      const editNoteInStorage = [...getParsedNotes()];
       const editedNote: INote = {
         id: noteId,
         tags: note.tags,
         text: note.text,
       };
-      editNoteInStorage.splice(+foundId, 1, editedNote);
+      editNoteInStorage.splice(foundId, 1, editedNote);
       localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
     } else {
       localStorage.setItem('notes', JSON.stringify([note]));
@@ -93,12 +89,10 @@ export default function PopupNote() {
   }
 
   function deleteNote() {
-    if (storageNotes) {
-      const editNoteInStorage = [...JSON.parse(storageNotes)];
-      editNoteInStorage.splice(+foundId, 1);
-      localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
-      closePopup();
-    }
+    const editNoteInStorage = [...getParsedNotes()];
+    editNoteInStorage.splice(foundId, 1);
+    localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
+    closePopup();
   }
 
   return (
