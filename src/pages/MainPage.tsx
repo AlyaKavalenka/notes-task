@@ -54,9 +54,13 @@ export default function MainPage() {
               onChange={(e) => setFilterTag(e.currentTarget.value)}
             >
               <option value="">Filter by tag: {filterTag || 'none'}</option>
-              <option value="none" className="filter__cancel">
-                Cancel filter
-              </option>
+              {filterTag === 'none' ? (
+                ''
+              ) : (
+                <option value="none" className="filter__cancel">
+                  Cancel filter
+                </option>
+              )}
               <optgroup label="Tags:">{tagsOptions}</optgroup>
             </select>
           </article>
