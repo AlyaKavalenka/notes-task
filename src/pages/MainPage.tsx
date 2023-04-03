@@ -57,8 +57,7 @@ export default function MainPage() {
               <option value="none" className="filter__cancel">
                 Cancel filter
               </option>
-              <hr />
-              {tagsOptions}
+              <optgroup label="Tags:">{tagsOptions}</optgroup>
             </select>
           </article>
           <Notes filterTag={filterTag} />
