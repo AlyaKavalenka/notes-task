@@ -36,10 +36,6 @@ export default function PopupNote() {
     });
   }, [noteValue, tagsArr]);
 
-  function closePopup() {
-    setViewMode('view');
-  }
-
   function addNote() {
     if (viewMode === 'create') {
       const addNoteToStorage = [...getParsedNotes(), note];
@@ -56,14 +52,14 @@ export default function PopupNote() {
     } else {
       localStorage.setItem('notes', JSON.stringify([note]));
     }
-    closePopup();
+    setViewMode('view');
   }
 
   function deleteNote() {
     const editNoteInStorage = [...getParsedNotes()];
     editNoteInStorage.splice(foundId, 1);
     localStorage.setItem('notes', JSON.stringify(editNoteInStorage));
-    closePopup();
+    setViewMode('view');
   }
 
   const setNoteTags = (value: Tag[]) => setTagsArr(value);
@@ -76,7 +72,7 @@ export default function PopupNote() {
           <section className="popup__close">
             <Button
               value="✖"
-              handleClick={() => closePopup()}
+              handleClick={() => setViewMode('view')}
               disable={false}
             />
           </section>
@@ -141,7 +137,7 @@ export default function PopupNote() {
         ) : (
           <Button
             value="Cancel"
-            handleClick={() => closePopup()}
+            handleClick={() => setViewMode('view')}
             disable={false}
           />
         )}

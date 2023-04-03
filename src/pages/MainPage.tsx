@@ -12,10 +12,6 @@ export default function MainPage() {
   const { viewMode, setViewMode } = useContext(ViewModeContext);
   const { filterTag } = useContext(FilterTagContext);
 
-  function openPopup() {
-    setViewMode('create');
-  }
-
   return (
     <>
       <Header />
@@ -24,7 +20,7 @@ export default function MainPage() {
           <article className="btns">
             <Button
               value="Create note"
-              handleClick={() => openPopup()}
+              handleClick={() => setViewMode('create')}
               disable={false}
             />
             <FilterByTag />
