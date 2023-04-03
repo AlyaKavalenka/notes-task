@@ -3,17 +3,28 @@ import { ViewModeContext } from '../../context/ViewModeContext';
 import Button from '../Button/Button';
 import { Tag } from '../../types';
 import './Tags.scss';
+import { FilterTagContext } from '../../context/FilterTag';
 
 export default function Tags(props: {
   noteTags: Tag[];
   setNoteTags: (value: Tag[]) => void;
 }) {
   const { viewMode } = useContext(ViewModeContext);
+  const { setFilterTag } = useContext(FilterTagContext);
   const { noteTags, setNoteTags } = props;
   const [inputTagValue, setInputTagValue] = useState('');
 
   const tags = noteTags.map((item, index) => (
-    <div className="tags__tag" key={`${item}`}>
+    <div
+      className="tags__tag"
+      key={`${item}`}
+      onClick={() => {
+        setFilterTag(`${item}`);
+      }}
+      role="button"
+      tabIndex={0}
+      onKeyUp={() => {}}
+    >
       {item}
       {viewMode !== 'view' ? (
         <button
