@@ -13,12 +13,16 @@ export default function MainPage() {
   );
   const storageNotes = localStorage.getItem('notes');
   let parsedNotes;
-  let allTagsArr;
+  let allTagsArr: Tag[];
   let tagsOptions;
+  let filteredArr;
   if (storageNotes) {
     parsedNotes = JSON.parse(storageNotes);
     allTagsArr = parsedNotes.map((item: INote) => item.tags).flat();
-    tagsOptions = allTagsArr.map((item: Tag) => (
+    filteredArr = allTagsArr.filter(
+      (item, index) => allTagsArr.indexOf(item) === index
+    );
+    tagsOptions = filteredArr.map((item: Tag) => (
       <option value="" key={item}>
         {item}
       </option>
