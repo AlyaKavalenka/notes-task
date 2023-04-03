@@ -25,9 +25,20 @@ export default function PopupNote() {
   const [tagsArr, setTagsArr] = useState(initialNoteTags);
   const [inputTagValue, setInputTagValue] = useState('');
   const [editText] = useState(noteValue);
-  const tags = tagsArr.map((item) => (
+  const tags = tagsArr.map((item, index) => (
     <div className="note__tag" key={`${item}`}>
       {item}
+      <button
+        type="button"
+        className="note__delete-tag"
+        onClick={() => {
+          const copyTagsArr = [...tagsArr];
+          copyTagsArr.splice(index, 1);
+          setTagsArr(copyTagsArr);
+        }}
+      >
+        x
+      </button>
     </div>
   ));
 
